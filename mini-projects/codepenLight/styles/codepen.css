@@ -1,0 +1,70 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+.pen {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+}
+.left {
+  flex-basis: 300px;
+  min-width: 300px;
+  background: aqua;
+  display: flex;
+  flex-direction: column;
+}
+.v-split {
+  width: 0.5rem;
+  background: #333;
+  cursor: col-resize;
+}
+.h-split {
+  border-top: 0.5rem #999;
+  cursor: row-resize;
+}
+.right {
+  background: maroon;
+  height: 100%;
+}
+.html,
+.css,
+.js {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  min-height: 10rem;
+}
+.js {
+  flex: 1;
+}
+.top-header {
+  height: 2rem;
+  background: #333;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding-left: 0.6rem;
+}
+.code {
+  overflow: auto;
+  flex: 1;
+  background: beige;
+  font-family: monospace;
+}
+.code:focus-within {
+  background: aqua;
+}
+.pen script:not([src]),
+.pen style,
+.pen main {
+  display: block;
+  white-space: pre;
+  height: 100%;
+  padding: 0.6rem;
+}
+script:focus {
+  outline: 0;
+}
