@@ -27,7 +27,6 @@ function initDrag(element, e, dir) {
       document.defaultView.getComputedStyle(elem).height,
       10
     );
-    let obj = { startY, startHeight };
   }
 
   function doDrag(e) {
@@ -36,7 +35,6 @@ function initDrag(element, e, dir) {
     }
     if (dir === 'h') {
       elem.style.flexBasis = startHeight + e.clientY - startY + 'px';
-      console.log(elem.style.flexBasis);
     }
   }
 
