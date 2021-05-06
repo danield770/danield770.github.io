@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useReducer } from 'react';
 import ReactDOM from 'react-dom';
 import {
   BrowserRouter as Router,
@@ -59,8 +59,7 @@ function App() {
       case 'LOGIN_ERROR':
         return {
           ...state,
-          loading: false,
-          errorMessage: action.error,
+          isLoading: false,
         };
 
       default:
@@ -115,7 +114,6 @@ function App() {
     if (type === 'email') {
       if (
         isFocused &&
-        // validation.isEmailValid === false &&
         e.target.value.length > 0 &&
         emailRegex.test(e.target.value)
       ) {
@@ -127,7 +125,6 @@ function App() {
       }
       if (
         !isFocused &&
-        // validation.isEmailValid !== false &&
         (e.target.value.length === 0 || !emailRegex.test(e.target.value))
       ) {
         setValidation((validation) => ({
@@ -138,22 +135,14 @@ function App() {
       }
     }
     if (type === 'password') {
-      if (
-        isFocused &&
-        // validation.isPasswordValid === false &&
-        e.target.value.length >= 6
-      ) {
+      if (isFocused && e.target.value.length >= 6) {
         setValidation((validation) => ({
           ...validation,
           isPasswordValid: true,
           isFormValid: validation.isEmailValid,
         }));
       }
-      if (
-        !isFocused &&
-        //validation.isPasswordValid !== false &&
-        e.target.value.length < 6
-      ) {
+      if (!isFocused && e.target.value.length < 6) {
         setValidation((validation) => ({
           ...validation,
           isPasswordValid: false,

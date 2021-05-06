@@ -2,10 +2,11 @@ body {
   margin: 0;
   --pink: hsl(0deg 100% 93%);
   --error: hsl(0deg 71% 51%);
+  --login-fail-color: hsl(0deg 81% 66%);
   --text-color: hsl(204deg 44% 25%);
   --btn-primary: hsl(151deg 84% 40%);
   --btn-secondary: hsl(208deg 100% 48%);
-  color: var(--text-color);
+  --greyscale: hsl(0deg 0% 89%);
 }
 h1 {
   font-size: 2.5rem;
@@ -21,6 +22,15 @@ h1 {
 .theme-input {
   visibility: hidden;
   position: absolute;
+}
+.theme-input:checked ~ .login-grid .login-svg-wpr {
+  background-color: var(--greyscale);
+}
+.theme-input:checked ~ .login-grid .form-btn {
+  background-color: black;
+}
+.theme-input:checked ~ .login-grid {
+  --text-color: black;
 }
 .theme-input:checked ~ .logo-svg {
   --logo-color: hsl(151deg 14% 40%);
@@ -45,6 +55,7 @@ h1 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   height: 100vh;
+  color: var(--text-color);
 }
 .login-svg-wpr {
   display: flex;
@@ -90,17 +101,12 @@ form {
   --bg-width: 100%;
   outline: 0;
 }
-/**
-* By default, the placeholder should be transparent. Also, it should 
-* inherit the transition.
-*/
+
 ::-webkit-input-placeholder {
   opacity: 0;
   transition: inherit;
 }
-/* input:-internal-autofill-selected {
-  background-color: white;
-} */
+
 .form-input:placeholder-shown + label {
   cursor: text;
   max-width: 20%;
@@ -203,7 +209,8 @@ nav li + li:before {
   display: inline-block;
   padding: 0 1rem;
 }
-.welcome {
+.welcome,
+.user-info {
   width: 40rem;
   display: flex;
   flex-direction: column;
@@ -211,4 +218,39 @@ nav li + li:before {
   margin: 0 auto;
 }
 .user-info {
+  direction: ltr;
+}
+.login-fail {
+  padding: 2.5rem;
+  position: absolute;
+  height: 2rem;
+  width: 20%;
+  left: 0;
+  right: 0;
+  bottom: 5rem;
+  background-color: var(--login-fail-color);
+  margin: auto;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+.btn-fail {
+  background-color: transparent;
+  border: 0;
+  position: absolute;
+  inset-block-start: 1rem;
+  inset-inline-end: 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  color: inherit;
+}
+@media screen and (max-width: 1000px) {
+  .login-svg-wpr {
+    display: none;
+  }
+  .login-grid {
+    grid-template-columns: 1fr;
+  }
 }

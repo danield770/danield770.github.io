@@ -12,8 +12,8 @@ function LoginFail(props) {
   return (
     <div className='login-fail'>
       מייל או סיסמה לא נכונים
-      <button type='button' onClick={props.resetLoginFail}>
-        Close
+      <button className='btn-fail' type='button' onClick={props.resetLoginFail}>
+        X
       </button>
     </div>
   );
