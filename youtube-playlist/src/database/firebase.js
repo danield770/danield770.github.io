@@ -23,8 +23,8 @@ export const addVideo = async ({
 }) => {
   await videosRef.doc(id).set({
     id,
-    youtubeId,
     title,
+    youtubeId,
     duration,
     timestamp,
   });
