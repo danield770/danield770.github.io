@@ -21,15 +21,6 @@ export const addVideo = async ({
   duration,
   timestamp,
 }) => {
-  console.log(
-    'addding video to firebase',
-    id,
-    youtubeId,
-    duration,
-    title,
-    timestamp
-  );
-
   await videosRef.doc(id).set({
     id,
     youtubeId,
