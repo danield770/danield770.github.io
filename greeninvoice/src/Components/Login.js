@@ -1,123 +1,193 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../Hooks/useAuth.js';
+import useForm from '../Hooks/useForm.js';
 
-function Login(props) {
-  //     const ROOT_URL =
-  //     'https://desolate-ridge-21792.herokuapp.com/https://jupiter.d.greeninvoice.co.il/api/v1';
-  //   //const ROOT_URL = 'https://jupiter.d.greeninvoice.co.il/api/v1';
-  //   // const [email, setEmail] = useState('');
-  //   // const [password, setPassword] = useState('');
+import LoginFail from './LoginFail';
+import { validate, validateToValid } from '../helper/validationRules.js';
+import ValidationMessage from './ValidationMessage';
+import { ReactComponent as LoginSvg } from '../assets/login.svg';
+import { ReactComponent as LogoSvg } from '../assets/logo.svg';
+import { ReactComponent as GoogleSvg } from '../assets/google-icon.svg';
 
-  //   // const [validation, setValidation] = useState({});
+function Login() {
+  const auth = useAuth();
+  const ROOT_URL =
+    'https://desolate-ridge-21792.herokuapp.com/https://jupiter.d.greeninvoice.co.il/api/v1/account/login';
 
-  //   const initialState = {
-  //     //email: "",
-  //     //password: "",
-  //     isAuthenticated: false,
-  //     isLoading: false,
-  //     loginFailedMessage: '',
-  //     user: {},
-  //     // location: '',
-  //     //isFormValid: false,
-  //     //isEmailValid: null,
-  //     //isPasswordValid: null
-  //   };
+  // const [formField, setFormField] = useState({ email: '', password: '' });
+  // const [validation, setValidation] = useState({
+  //   isFormValid: false,
+  //   isEmailValid: null,
+  //   isPasswordValid: null,
+  //   hasLoginFailed: false,
+  // });
+  const [showLoginFail, setShowLoginFail] = useState(false);
 
-  //   const [state, dispatch] = useReducer(reducer, initialState);
+  if (auth && auth.state.hasLoginFailed) {
+    setShowLoginFail(true);
+  }
 
-  //   //const { location } = useLocation();
-  //   //console.log({ location });
+  const { values, errors, handleChange, handleBlur, handleSubmit } = useForm(
+    login,
+    validate,
+    validateToValid
+  );
 
-  //   async function handleLogin(loginPayload, e) {
-  //     e.preventDefault();
-  //     //console.log({ formField });
+  function login() {
+    console.log('No errors, submit callback called!');
+    auth.login(ROOT_URL, { email: values.email, password: values.password });
+  }
 
-  //     const requestOptions = {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify(loginPayload),
-  //     };
+  function loginFailedReset() {
+    setShowLoginFail(false);
+  }
 
-  //     try {
-  //       dispatch({ type: 'REQUEST_LOGIN' });
-  //       let response = await fetch(`${ROOT_URL}/account/login`, requestOptions);
-  //       let data = await response.json();
+  // function handleChange(type, e) {
+  //   setFormField({ ...formField, [type]: e.target.value });
+  //   validateInput(type, true, e);
+  // }
 
-  //       if (data.id) {
-  //         console.log({ data });
-  //         dispatch({ type: 'LOGIN_SUCCESS', payload: data });
-  //         // localStorage.setItem("currentUser", JSON.stringify(data));
-  //         //data.then(() => history.push('/welcome'));
-  //         // console.log('history2', history);
-  //         // history.push('/welcome');
-  //         return data;
-  //       }
-
-  //       dispatch({ type: 'LOGIN_ERROR', error: data.errors[0] });
-  //       console.log('error', data);
-  //       return;
-  //     } catch (error) {
-  //       dispatch({ type: 'LOGIN_ERROR', error: error });
-  //       console.log({ error });
+  // function validateInput(type, isFocused, e) {
+  //   const emailRegex = /\S+@\S+\.\S+/;
+  //   if (type === 'email') {
+  //     if (
+  //       isFocused &&
+  //       e.target.value.length > 0 &&
+  //       emailRegex.test(e.target.value)
+  //     ) {
+  //       setValidation((validation) => ({
+  //         ...validation,
+  //         isEmailValid: true,
+  //         isFormValid: validation.isPasswordValid,
+  //       }));
+  //     }
+  //     if (
+  //       !isFocused &&
+  //       (e.target.value.length === 0 || !emailRegex.test(e.target.value))
+  //     ) {
+  //       setValidation((validation) => ({
+  //         ...validation,
+  //         isEmailValid: false,
+  //         isFormValid: false,
+  //       }));
   //     }
   //   }
-
-  //   function reducer(state, action) {
-  //     switch (action.type) {
-  //       case 'REQUEST_LOGIN':
-  //         return {
-  //           ...state,
-  //           isLoading: true,
-  //         };
-  //       case 'LOGIN_SUCCESS':
-  //         return {
-  //           ...state,
-  //           user: action.payload,
-  //           isAuthenticated: true,
-  //           isLoading: false,
-  //         };
-  //       case 'LOGOUT':
-  //         return {
-  //           ...state,
-  //           //email: "",
-  //           //password: "",
-  //           isAuthenticated: false,
-  //           user: {},
-  //         };
-
-  //       case 'LOGIN_ERROR':
-  //         return {
-  //           ...state,
-  //           loading: false,
-  //           errorMessage: action.error,
-  //         };
-
-  //       default:
-  //         throw new Error(`Unhandled action type: ${action.type}`);
+  //   if (type === 'password') {
+  //     if (isFocused && e.target.value.length >= 6) {
+  //       setValidation((validation) => ({
+  //         ...validation,
+  //         isPasswordValid: true,
+  //         isFormValid: validation.isEmailValid,
+  //       }));
+  //     }
+  //     if (!isFocused && e.target.value.length < 6) {
+  //       setValidation((validation) => ({
+  //         ...validation,
+  //         isPasswordValid: false,
+  //         isFormValid: false,
+  //       }));
   //     }
   //   }
-
-  //   const [formField, setFormField] = useState({ email: '', password: '' });
-
-  //   function handleChange(type, e) {
-  //     setFormField({ ...formField, [type]: e.target.value });
-  //   }
+  // }
 
   return (
-    <div />
-    // <form
-    //   onSubmit={(e) =>
-    //     handleLogin({ email: formField.email, password: formField.password }, e)
-    //   }
-    // >
-    //   <div>
-    //     <label>Email</label>
-    //     <input type='email' onChange={(e) => handleChange('email', e)} />
-    //   </div>
-    //   <div>
-    //     <label>Password</label>
-    //     <input type='password' onChange={(e) => handleChange('password', e)} />
-    //   </div>
-    //   <button>Login</button>
-    // </form>
+    <div>
+      {auth && auth.state.isAuthenticated ? (
+        <div className='nav-wpr'>
+          <nav>
+            <ul>
+              <li>
+                <Link to='/welcome'>Welcome</Link>
+              </li>
+              <li>
+                <Link to='/user-info'>User Info</Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      ) : (
+        <div>
+          <input className='theme-input' id='themToggle' type='checkbox' />
+          <label className='theme-label' htmlFor='themToggle'></label>
+
+          <LogoSvg className='logo-svg' />
+          {showLoginFail && <LoginFail resetLoginFail={loginFailedReset} />}
+
+          <div className='login-grid'>
+            <form autoComplete='off' onSubmit={handleSubmit} noValidate>
+              <h1>היי, טוב לראות אותך</h1>
+              <div className='form-groups'>
+                <div className={`form-group ${errors?.email ? 'error' : ''}`}>
+                  <ValidationMessage
+                    value={
+                      errors?.email || 'כתובת המייל איתה נרשמת לחשבונית ירוקה'
+                    }
+                    inputType='email'
+                  />
+                  <input
+                    className='form-input'
+                    id='email'
+                    name='email'
+                    type='email'
+                    placeholder=' '
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                  />
+                  <label className='form-label' htmlFor='email'>
+                    מייל
+                  </label>
+                </div>
+                <div
+                  className={`form-group ${errors?.password ? 'error' : ''}`}
+                >
+                  <ValidationMessage
+                    value={errors?.password}
+                    inputType='password'
+                  />
+                  <input
+                    className='form-input'
+                    id='password'
+                    name='password'
+                    type='password'
+                    placeholder=' '
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                  />
+                  <label className='form-label' htmlFor='password'>
+                    סיסמה
+                  </label>
+                </div>
+              </div>
+              <div className='btn-group'>
+                <button
+                  disabled={
+                    errors?.email ||
+                    errors?.password ||
+                    (auth && auth.state.isLoading)
+                  }
+                  className='form-btn btn-primary'
+                >
+                  {auth && auth.state.isLoading ? (
+                    <span className='spinner'></span>
+                  ) : (
+                    <span>כניסה</span>
+                  )}
+                </button>
+                <button className='form-btn btn-secondary' type='button'>
+                  <span>כניסה עם גוגל</span>
+                  <GoogleSvg className='google-svg' />
+                </button>
+              </div>
+            </form>
+            <div className='login-svg-wpr'>
+              <LoginSvg className='login-svg' />
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
+
+export default Login;
